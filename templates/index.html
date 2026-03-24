@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="home" class="min-h-screen py-20 flex items-center justify-center hero-gradient pt-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center reveal">
+        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6">
+            Hi, I'm <span class="text-gradient">{{ cv.personal.name }}</span>
+        </h1>
+        <h2 class="text-2xl md:text-3xl font-medium text-slate-600 dark:text-slate-300 mb-8 max-w-2xl">
+            {{ cv.personal.role }}
+        </h2>
+        <p class="text-lg md:text-xl text-slate-500 dark:text-slate-400 mb-10 max-w-3xl">
+            {{ cv.personal.tagline }}
+        </p>
+        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+            <a href="#projects"
+                class="px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                View Projects
+            </a>
+            <a href="{{ url_for('download_cv') }}"
+                class="px-8 py-3 rounded-full bg-white dark:bg-slate-800 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-700 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-all shadow-md hover:shadow-lg hover:-translate-y-1">
+                <i class="fas fa-download mr-2"></i> Download CV
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="py-20 bg-white dark:bg-darkCard transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="w-full md:w-1/3 flex justify-center">
+                <!-- Profile Image -->
+                <div class="relative w-64 h-64 rounded-full p-2 bg-gradient-to-tr from-blue-400 to-blue-600 shadow-xl">
+                    <img src="{{ url_for('static', filename='images/pho.jpeg') }}" alt="{{ cv.personal.name }}"
+                        class="w-full h-full object-cover rounded-full border-4 border-white dark:border-slate-800">
+                </div>
+            </div>
+            <div class="w-full md:w-2/3">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-slate-800 dark:text-white">
+                    About <span class="text-gradient">Me</span>
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded mb-8"></div>
+                <p class="text-lg text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    {{ cv.personal.about_summary }}
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+                    <div class="flex items-center text-slate-700 dark:text-slate-300">
+                        <i class="fas fa-envelope w-8 text-blue-500"></i>
+                        <span>{{ cv.personal.email }}</span>
+                    </div>
+                    <div class="flex items-center text-slate-700 dark:text-slate-300">
+                        <i class="fas fa-phone w-8 text-blue-500"></i>
+                        <span>{{ cv.personal.mobile }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills" class="py-20 bg-lightBg dark:bg-darkBg transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-slate-800 dark:text-white">Technical <span
+                    class="text-gradient">Skills</span></h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {% for category, skillsList in cv.skills.items() %}
+            <div
+                class="skill-card bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm border border-slate-100 dark:border-slate-700 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group">
+                <div
+                    class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-slate-700 flex items-center justify-center mb-6 text-blue-500 group-hover:bg-blue-500 group-hover:text-white transition-colors duration-300">
+                    {% if "Language" in category %}
+                    <i class="fas fa-code text-xl"></i>
+                    {% elif "Framework" in category %}
+                    <i class="fas fa-layer-group text-xl"></i>
+                    {% elif "Tool" in category %}
+                    <i class="fas fa-wrench text-xl"></i>
+                    {% else %}
+                    <i class="fas fa-users text-xl"></i>
+                    {% endif %}
+                </div>
+                <h3 class="text-xl font-bold mb-4 text-slate-800 dark:text-white">{{ category }}</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for skill in skillsList %}
+                    <span
+                        class="px-3 py-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm rounded-full font-medium border border-slate-200 dark:border-slate-600 flex items-center hover:bg-blue-500 hover:text-white hover:border-blue-500 dark:hover:bg-blue-600 dark:hover:border-blue-600 dark:hover:text-white transition-all duration-300 cursor-default shadow-sm hover:shadow-md group/skill">
+                        <i class="{{ skill.icon }} mr-2 {{ skill.color }} group-hover/skill:text-white"></i>{{
+                        skill.name }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects" class="py-20 bg-white dark:bg-darkCard transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-slate-800 dark:text-white">Featured <span
+                    class="text-gradient">Projects</span></h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for project in cv.projects %}
+            <div
+                class="project-card bg-slate-50 dark:bg-slate-800 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 flex flex-col h-full hover:shadow-xl transition-shadow duration-300">
+                <!-- Card Header colored top line -->
+                <div class="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+
+                {% if project.image %}
+                <div class="w-full h-48 overflow-hidden relative group">
+                    <img src="{{ url_for('static', filename=project.image) }}" alt="{{ project.title }}"
+                        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div
+                        class="absolute inset-0 bg-blue-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="p-8 flex-grow flex flex-col">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white">{{ project.title }}</h3>
+                        <a href="{{ cv.personal.github }}" target="_blank"
+                            class="text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                    </div>
+
+                    <p class="text-sm font-medium text-blue-500 mb-4">{{ project.duration }}</p>
+                    <p class="text-slate-600 dark:text-slate-300 mb-6 flex-grow">{{ project.description }}</p>
+
+                    <div class="flex flex-wrap gap-2 mt-auto">
+                        {% for t in project.tech %}
+                        <span
+                            class="text-xs font-semibold px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded">
+                            {{ t }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Experience Background Section -->
+<section id="experience" class="py-20 bg-lightBg dark:bg-darkBg transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-slate-800 dark:text-white">My <span
+                    class="text-gradient">Background</span></h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded mx-auto"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Education -->
+            <div>
+                <h3 class="text-2xl font-bold mb-8 flex items-center text-slate-800 dark:text-white">
+                    <i class="fas fa-graduation-cap text-indigo-500 mr-4"></i> Education Overview
+                </h3>
+                <div
+                    class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 dark:before:via-slate-700 before:to-transparent">
+                    {% for edu in cv.education %}
+                    <div
+                        class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                        <div
+                            class="flex items-center justify-center w-10 h-10 rounded-full border-4 border-white dark:border-slate-800 bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 timeline-card transition-transform duration-300 group-hover:scale-110">
+                            <i class="fas fa-university text-sm"></i>
+                        </div>
+                        <div
+                            class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 timeline-card hover:shadow-md transition-shadow">
+                            <span class="font-medium text-indigo-500 text-sm mb-1 block">{{ edu.duration }}</span>
+                            <h4 class="text-lg font-bold text-slate-800 dark:text-white">{{ edu.degree }}</h4>
+                            <p class="text-slate-600 dark:text-slate-400 mt-1 mb-2">{{ edu.institution }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-8 text-center md:text-left">
+                    <a href="{{ url_for('education') }}"
+                        class="inline-flex items-center text-indigo-500 hover:text-indigo-600 font-medium transition-colors">
+                        View Full Details <i
+                            class="fas fa-arrow-right ml-2 text-sm transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Experience & Certifications -->
+            <div>
+                <h3 class="text-2xl font-bold mb-8 flex items-center text-slate-800 dark:text-white">
+                    <i class="fas fa-briefcase text-blue-500 mr-4"></i> Training & Experience
+                </h3>
+                <div class="space-y-6">
+                    {% for exp in cv.experience %}
+                    <div
+                        class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 timeline-card relative overflow-hidden group hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-blue-500 z-10"></div>
+                        {% if exp.image %}
+                        <div class="w-full h-48 overflow-hidden relative">
+                            <img src="{{ url_for('static', filename=exp.image) }}" alt="{{ exp.title }}"
+                                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+                            <div class="absolute bottom-4 left-6 z-20">
+                                <span
+                                    class="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-full mb-2 inline-block shadow-lg">Training</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="p-6">
+                            <span class="font-medium text-blue-500 text-sm mb-2 block"><i
+                                    class="far fa-calendar-alt mr-2"></i>{{ exp.duration }}</span>
+                            <h4 class="text-xl font-bold text-slate-800 dark:text-white mb-3">{{ exp.title }}</h4>
+                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{{ exp.details }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="mt-10">
+                    <h4 class="text-xl font-bold mb-6 text-slate-800 dark:text-white">Certifications</h4>
+                    <div
+                        class="grid grid-cols-1 sm:grid-cols-2 gap-4 border border-slate-200 dark:border-slate-700 p-4 rounded-xl bg-slate-50 dark:bg-darkCard">
+                        {% for cert in cv.certifications %}
+                        <div class="flex items-start">
+                            <i class="fas fa-certificate text-blue-500 mt-1 mr-3"></i>
+                            <div>
+                                <p class="font-semibold text-slate-800 dark:text-white text-sm">{{ cert.name }}</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400">{{ cert.date }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="mt-10">
+                    <h4 class="text-xl font-bold mb-6 text-slate-800 dark:text-white">Achievements</h4>
+                    <ul class="space-y-3">
+                        {% for ach in cv.achievements %}
+                        <li
+                            class="flex items-start text-slate-700 dark:text-slate-300 text-sm bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm border border-slate-100 dark:border-slate-700">
+                            <i class="fas fa-trophy text-yellow-500 mt-1 mr-3 shrink-0"></i>
+                            <span>{{ ach }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-20 bg-white dark:bg-darkCard transition-colors duration-300">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4 text-slate-800 dark:text-white">Get In <span
+                    class="text-gradient">Touch</span></h2>
+            <div class="w-20 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded mx-auto mb-6">
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 text-lg">Have a project in mind or want to connect? Send me a
+                message!</p>
+        </div>
+
+        <div
+            class="bg-slate-50 dark:bg-slate-800 rounded-3xl p-8 md:p-12 shadow-sm border border-slate-200 dark:border-slate-700">
+            <form action="{{ url_for('contact') }}" method="POST" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Your
+                            Name</label>
+                        <input type="text" id="name" name="name" required class="input-field" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="email"
+                            class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email
+                            Address</label>
+                        <input type="email" id="email" name="email" required class="input-field"
+                            placeholder="john@example.com">
+                    </div>
+                </div>
+                <div>
+                    <label for="message"
+                        class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Message</label>
+                    <textarea id="message" name="message" rows="5" required class="input-field resize-none"
+                        placeholder="Hello there!"></textarea>
+                </div>
+                <div class="text-center pt-4">
+                    <button type="submit"
+                        class="w-full md:w-auto px-10 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800">
+                        Send Message <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
